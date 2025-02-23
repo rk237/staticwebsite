@@ -5,7 +5,10 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy the application files into the container
-#COPY app/ /app
+COPY app/ ./app
+
+# Copy the requirements file from docker-project/
+COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
