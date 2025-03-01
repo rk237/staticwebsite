@@ -13,7 +13,7 @@ COPY . .
 
 # Install Python dependencies
 #RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -r app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the application's port
 EXPOSE 8000
