@@ -5,13 +5,15 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy the application files into the container
-COPY app/ ./app
+#COPY app/ ./app
+COPY . .
 
 # Copy the requirements file from docker-project/
-COPY requirements.txt .
+#COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+#RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r app/requirements.txt
 
 # Expose the application's port
 EXPOSE 8000
