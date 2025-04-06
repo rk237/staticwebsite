@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    stages{
+        
+        stage('Code'){
+            steps{
+                git url : "https://github.com/rk237/staticwebsite.git", branch: "main"
+                echo "Code cloned from github repository"
+            }
+        }
+        
+        stage('Build and Test'){
+            steps{
+                sh "docker build -t static-website ."
+                echo "Building docker image for static website"
+            }
+        }
+        
+        stage('Push to docker hub'){
+            steps{
+                withCredentials([usernamePassword(credentialsId:"dockerid",passwordVariable:"dockerhubpass",usernameVariable:"dockerhubuser")]){
+                    sh "echo $dockerHubPass | docker login -u $dockerHubUser --password-stdin"
+                    sh "docker image tag static-website:latest ${env.dockerHubUser}/static-website:latest"
+                    sh "docker push ${env.dockerHubUser}/static-website:latest"
+                    echo "docker image pushed to docker hub"
+                }
+            }
+        }
+        
+        stage('Deploy'){
+            steps{
+                sh " docker run -d -p 8000:8000 rahulsingh2310/static-website:latest"
+                echo "docker container deployed from image in docker hub"
+            }
+        }
+    }
+}
